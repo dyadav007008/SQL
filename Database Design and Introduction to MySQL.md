@@ -651,9 +651,123 @@ The constituents of an ERD are as follows:
 - Attribute: It is a column in an entity type. For example, 'orderNumber' is an attribute in the 'orders' entity type.
 - Relationship Types: They are the lines between the tables. They define the relationships among the tables. These can be of various types based on their cardinalities, i.e., one-to-one, one-to-many, many-to-many, etc.
 
+# Cardinality:
 
+Types of Cardinality:
+- One to One
+- One to Many
+- Many to Many
 
+- # Cardinality in Database Relationships
 
+**Cardinality** refers to the number of instances of one entity (table) that can or must be associated with each instance of another entity in a relational database. It defines the nature of the relationship between two tables, helping to ensure the correct modeling of real-world scenarios.
+
+In the context of a **relational database**, cardinality is typically used to describe the relationship between tables, particularly the number of rows that can exist in one table related to the rows in another table. Cardinality constraints help in defining the structure and rules for these relationships, ensuring data consistency and integrity.
+
+---
+
+## Types of Cardinality
+
+There are **three main types of cardinality** that define relationships between two tables (or entities):
+
+### 1. **One-to-One (1:1) Relationship
+- **Definition**: In a **one-to-one** relationship, each record in the first table is related to **at most one record** in the second table, and vice versa.
+- **Example**: A person can have one passport, and a passport can only belong to one person. This would be modeled by a **one-to-one** relationship.
+
+#### Example:
+```sql
+CREATE TABLE Person (
+    person_id INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+CREATE TABLE Passport (
+    passport_id INT PRIMARY KEY,
+    person_id INT,
+    issue_date DATE,
+    FOREIGN KEY (person_id) REFERENCES Person(person_id)
+);
+```
+
+### Here:
+
+- Each Person can have only one Passport.
+- Each Passport is assigned to only one Person.
+
+### Explanation:
+- The Person table has a person_id as its primary key.
+- The Passport table has a person_id column, which acts as a foreign key that references the person_id in the Person table.
+- Since the relationship is one-to-one, the person_id in the Passport table is guaranteed to be unique, meaning each person can have only one passport.
+
+### Use Cases for One-to-One Relationships:
+- Person and Passport: A person can have one passport, and a passport belongs to one person.
+- Employee and Company Car: An employee may be assigned one company car, and the car is assigned to one employee.
+- User and Profile: A user account can have one profile, and the profile belongs to one user.
+
+### 2. **One-to-Many (1:N) Relationship**
+
+- **Definition**: In a **one-to-many** relationship, each record in the first table (the "one" side) can be associated with **many records** in the second table (the "many" side). However, each record in the second table is related to **at most one record** in the first table.
+
+- **Example**: A **customer** can place **many orders**, but each **order** can be placed by **only one customer**.
+
+#### Example:
+
+```sql
+CREATE TABLE Customer (
+    customer_id INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+CREATE TABLE Order (
+    order_id INT PRIMARY KEY,
+    customer_id INT,
+    order_date DATE,
+    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
+);
+```
+
+### Here:
+- A Customer can have many Orders.
+- An Order can be associated with only one Customer.
+
+### Explanation:
+- The Customer table has a customer_id as its primary key.
+- The Order table has a customer_id column, which acts as a foreign key that references the customer_id in the Customer table.
+- This ensures that each order is placed by a specific customer, but a customer can place multiple orders.
+
+### Use Cases for One-to-Many Relationships:
+- Customers and Orders: A customer can place many orders, but each order can be linked to only one customer.
+- Departments and Employees: A department can have many employees, but each employee is part of only one department.
+- Authors and Books: An author can write many books, but each book is written by one author.
+
+### 3. **Many-to-Many (M:N) Relationship**
+
+- **Definition**: In a **many-to-many** relationship, each record in the first table can be associated with **many records** in the second table, and each record in the second table can also be associated with **many records** in the first table.
+
+- **Example**: **Students** can enroll in **many courses**, and each **course** can have **many students**.
+
+#### Example (Through a Junction Table):
+Since a **many-to-many** relationship can't be directly represented with foreign keys in a relational database, it is usually implemented using a **junction table** (also called a **bridge table** or **associative table**).
+
+```sql
+CREATE TABLE Student (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+CREATE TABLE Course (
+    course_id INT PRIMARY KEY,
+    course_name VARCHAR(100)
+);
+
+CREATE TABLE Enrollment (
+    student_id INT,
+    course_id INT,
+    PRIMARY KEY (student_id, course_id),
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (course_id) REFERENCES Course(course_id)
+);
+```
 
 
 
