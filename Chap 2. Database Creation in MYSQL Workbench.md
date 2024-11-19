@@ -71,7 +71,128 @@ CREATE TABLE table_name (
 | Maximum Length | Set at column definition (e.g., CHAR(10))                                 | Set at column definition, but can store up to the defined limit (e.g., VARCHAR(10))                          |
 | Padding        | Pads shorter values with spaces to fit the fixed length                   | No padding, stores only the actual length of data                                                            |
 
+## **Alter Command**  
+It is used to modify an existing database object such as a table. 
 
+Syntax: 
+ALTER TABLE table_name
+action;
+
+Common Use Cases for ALTER TABLE:
+
+1. Add Column:
+```sql
+ALTER TABLE Employees
+ADD Email VARCHAR(100);
+```
+
+2. Drop table:
+```sql
+ALTER TABLE Employees
+DROP COLUMN Age;
+```
+
+3. Modify a Column
+```sql
+ALTER TABLE Employees
+MODIFY COLUMN Name VARCHAR(255);
+```
+4. Rename a Column
+
+```sql
+ALTER TABLE Employees
+CHANGE Age AgeInYears INT;
+```
+
+5. Rename a Table
+```sql
+ALTER TABLE Employees
+RENAME TO Staff;
+```
+
+6. Add a Constraint: You can add constraints like PRIMARY KEY, FOREIGN KEY, UNIQUE, etc.
+
+```sql
+ALTER TABLE Employees
+ADD CONSTRAINT pk_employee_id PRIMARY KEY (ID);
+```
+
+7. Drop a constraint
+
+```sql
+ALTER TABLE Employees
+DROP CONSTRAINT pk_employee_id;
+```
+
+### DROP: is used to remove an entire database object
+
+DROP TABLE table_name;
+DROP DATABASE database_name;
+DROP VIEW view_name;
+DROP INDEX index_name;
+
+# DML Statements: A Demonstration
+
+## Insert:
+The INSERT statement in SQL is used to add new rows (records) into an existing table. The INSERT INTO command allows you to insert one or more rows of data into a table.
+
+Syntax:
+INSERT INTO table_name (column1, column2, column3, ...)
+VALUES (value1, value2, value3, ...);
+
+```sql
+INSERT INTO Employees (ID, Name, Age, HireDate)
+VALUES (2, 'Jane Smith', 28, '2024-02-01'),
+       (3, 'Alice Johnson', 35, '2024-03-01'),
+       (4, 'Bob Brown', 40, '2024-04-01');
+
+```
+Order of specifying attributes should be same as attributes defined during table creation
+```sql
+INSERT INTO table_name
+VALUES (value1, value2, value3, ...);
+```
+
+
+## Update Command: 
+
+The UPDATE statement in SQL is used to modify the existing records (rows) in a table. It allows you to change the values of one or more columns for rows that meet a specified condition.
+
+Syntax:
+```sql
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+```
+
+Example:
+```sql
+UPDATE Employees
+SET Name = 'John Doe', Age = 30
+WHERE ID = 1;
+```
+Example:
+
+```sql
+UPDATE Employees
+SET Age = (SELECT MAX(Age) FROM Employees)
+WHERE ID = 1;
+```
+
+## Delete Statement:
+The DELETE statement in SQL is used to remove one or more rows from a table based on a specified condition. Unlike the DROP statement, which removes the entire table or database, DELETE removes only the data (rows) from a table, and the structure of the table remains intact.
+A value that is a primary key in a table cannot be deleted if another table has that same value as a foreign key
+
+Syntax:
+
+DELETE FROM table_name
+WHERE condition;
+
+```sql
+DELETE FROM Employees
+WHERE Age < 25;
+
+```
 
 
 
